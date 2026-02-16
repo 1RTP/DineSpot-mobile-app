@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Platform } from 'react-native';
+import { useRestaurantStore } from './restaurantStore';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
-// Storage helper for web/native compatibility
 const storage = {
   getItem: async (key: string) => {
     if (Platform.OS === 'web') {
@@ -36,18 +36,18 @@ interface User {
   avatar?: string | null;
 }
 
-interface AuthState {
-  user: User | null;
-  token: string | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
-  register: (fullName: string, email: string, password: string) => Promise<boolean>;
-  logout: () => Promise<void>;
-  updateProfile: (data: { fullName?: string; email?: string }) => Promise<boolean>;
-  updateAvatar: (base64Image: string) => Promise<boolean>;
-  changePassword: (currentPassword: string, newPassword: string) => Promise<boolean>;
-  loadUser: () => Promise<void>;
+interface AuthState { 
+  user: User | null; 
+  token: string | null; 
+  isLoading: boolean; 
+  isAuthenticated: boolean; 
+  login: (email: string, password: string) => Promise<boolean>; 
+  register: (fullName: string, email: string, password: string) => Promise<boolean>; 
+  logout: () => Promise<void>; 
+  updateProfile: (data: { fullName?: string; email?: string }) => Promise<boolean>; 
+  updateAvatar: (base64Image: string) => Promise<boolean>; 
+  changePassword: (currentPassword: string, newPassword: string) => Promise<boolean>; 
+  loadUser: () => Promise<void>; 
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -56,16 +56,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
   isAuthenticated: false,
 
-  login: async (email: string, password: string) => {
+  login: async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(`${API_URL}/api/auth/login`, { email, password });
       const { user, token } = response.data;
       await storage.setItem('token', token);
       await storage.setItem('user', JSON.stringify(user));
       set({ user, token, isAuthenticated: true });
+      await useRestaurantStore.getState().loadFavorites(token);
       return true;
     } catch (error) {
       console.error('Login error:', error);
@@ -73,17 +71,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  register: async (fullName: string, email: string, password: string) => {
+  register: async (fullName, email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/api/auth/register`, {
-        fullName,
-        email,
-        password,
-      });
+      const response = await axios.post(`${API_URL}/api/auth/register`, { fullName, email, password });
       const { user, token } = response.data;
       await storage.setItem('token', token);
       await storage.setItem('user', JSON.stringify(user));
       set({ user, token, isAuthenticated: true });
+      await useRestaurantStore.getState().loadFavorites(token);
       return true;
     } catch (error) {
       console.error('Register error:', error);
@@ -96,10 +91,28 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       await storage.removeItem('token');
       await storage.removeItem('user');
       set({ user: null, token: null, isAuthenticated: false });
+      useRestaurantStore.setState({ favorites: [] });
     } catch (error) {
       console.error('Logout error:', error);
-      // Force logout anyway
       set({ user: null, token: null, isAuthenticated: false });
+      useRestaurantStore.setState({ favorites: [] });
+    }
+  },
+
+  loadUser: async () => {
+    try {
+      const token = await storage.getItem('token');
+      const userStr = await storage.getItem('user');
+      if (token && userStr) {
+        const user = JSON.parse(userStr);
+        set({ user, token, isAuthenticated: true, isLoading: false });
+        await useRestaurantStore.getState().loadFavorites(token);
+      } else {
+        set({ isLoading: false });
+      }
+    } catch (error) {
+      console.error('Load user error:', error);
+      set({ isLoading: false });
     }
   },
 
@@ -154,19 +167,4 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  loadUser: async () => {
-    try {
-      const token = await storage.getItem('token');
-      const userStr = await storage.getItem('user');
-      if (token && userStr) {
-        const user = JSON.parse(userStr);
-        set({ user, token, isAuthenticated: true, isLoading: false });
-      } else {
-        set({ isLoading: false });
-      }
-    } catch (error) {
-      console.error('Load user error:', error);
-      set({ isLoading: false });
-    }
-  },
 }));

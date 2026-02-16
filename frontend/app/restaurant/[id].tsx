@@ -12,7 +12,7 @@ import PALETTE from '../../src/constants/colors';
 export default function RestaurantDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { token } = useAuthStore();
+  const { isAuthenticated, token } = useAuthStore(); 
   const { restaurants, favorites, toggleFavorite } = useRestaurantStore();
 
   const restaurant = restaurants.find((r) => r.id === id);
@@ -44,16 +44,18 @@ export default function RestaurantDetailScreen() {
           />
           <View style={[styles.headerOverlay, { paddingTop: insets.top + 10 }]}>
             <BackButton />
-            <TouchableOpacity
-              style={styles.favoriteButton}
-              onPress={() => toggleFavorite(restaurant.id, token)}
-            >
-              <Ionicons
-                name={isFavorite ? 'bookmark' : 'bookmark-outline'}
-                size={22}
-                color={isFavorite ? PALETTE.primary : PALETTE.textPrimary}
-              />
-            </TouchableOpacity>
+            {isAuthenticated && (
+              <TouchableOpacity
+                style={styles.favoriteButton}
+                onPress={() => toggleFavorite(restaurant.id, token)}
+              >
+                <Ionicons
+                  name={isFavorite ? 'bookmark' : 'bookmark-outline'}
+                  size={22}
+                  color={isFavorite ? PALETTE.primary : PALETTE.textPrimary}
+                />
+              </TouchableOpacity>
+            )}
           </View>
           <View style={styles.titleOverlay}>
             <Text style={styles.restaurantName}>{restaurant.name}</Text>

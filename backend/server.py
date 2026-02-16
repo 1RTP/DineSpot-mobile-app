@@ -9,6 +9,8 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import List, Optional
 import uuid
+from fastapi.encoders import jsonable_encoder
+from bson import ObjectId
 from datetime import datetime, timedelta
 import hashlib
 import secrets
@@ -52,7 +54,11 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     user = await db.users.find_one({"token": token})
     if not user:
         raise HTTPException(status_code=401, detail="Invalid token")
-    return user
+    return {
+        "id": user["id"],
+        "email": user["email"],
+        "fullName": user["fullName"]
+    }
 
 # Models
 class UserCreate(BaseModel):
@@ -186,14 +192,18 @@ async def update_profile(user_data: UserUpdate, current_user: dict = Depends(get
 
 @api_router.put("/auth/password")
 async def change_password(password_data: PasswordChange, current_user: dict = Depends(get_current_user)):
-    if not verify_password(password_data.currentPassword, current_user["password"]):
+    db_user = await db.users.find_one({"id": current_user["id"]})
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if not verify_password(password_data.currentPassword, db_user["password"]):
         raise HTTPException(status_code=400, detail="Current password is incorrect")
-    
+
     await db.users.update_one(
         {"id": current_user["id"]},
         {"$set": {"password": hash_password(password_data.newPassword)}}
     )
-    
+
     return {"message": "Password updated successfully"}
 
 class AvatarUpdate(BaseModel):
@@ -232,20 +242,19 @@ async def get_restaurant(restaurant_id: str):
     return Restaurant(**restaurant)
 
 # Favorites Routes
-@api_router.get("/favorites")
+@api_router.get("/favorites", response_model=list[Favorite])
 async def get_favorites(current_user: dict = Depends(get_current_user)):
     favorites = await db.favorites.find({"userId": current_user["id"]}).to_list(100)
-    return favorites
+    return jsonable_encoder(favorites, custom_encoder={ObjectId: str})
 
-@api_router.post("/favorites")
+@api_router.post("/favorites", response_model=Favorite)
 async def add_favorite(favorite_data: FavoriteCreate, current_user: dict = Depends(get_current_user)):
-    # Check if already favorited
     existing = await db.favorites.find_one({
         "userId": current_user["id"],
         "restaurantId": favorite_data.restaurantId
     })
     if existing:
-        return existing
+        return jsonable_encoder(existing, custom_encoder={ObjectId: str})
     
     favorite = {
         "id": str(uuid.uuid4()),
@@ -254,8 +263,8 @@ async def add_favorite(favorite_data: FavoriteCreate, current_user: dict = Depen
         "createdAt": datetime.utcnow()
     }
     result = await db.favorites.insert_one(favorite) 
-    favorite["_id"] = str(result.inserted_id)
-    return favorite
+    doc = await db.favorites.find_one({"_id": result.inserted_id})
+    return jsonable_encoder(doc, custom_encoder={ObjectId: str})
 
 @api_router.delete("/favorites/{restaurant_id}")
 async def remove_favorite(restaurant_id: str, current_user: dict = Depends(get_current_user)):

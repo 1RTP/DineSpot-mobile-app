@@ -9,7 +9,7 @@ import PALETTE from '../../src/constants/colors';
 
 export default function SearchScreen() {
   const insets = useSafeAreaInsets();
-  const { token } = useAuthStore();
+  const { isAuthenticated, token } = useAuthStore();
   const { restaurants, favorites, toggleFavorite } = useRestaurantStore();
   const [searchText, setSearchText] = useState('');
 
@@ -58,7 +58,9 @@ export default function SearchScreen() {
             <RestaurantCard
               restaurant={item}
               isFavorite={favorites.includes(item.id)}
-              onToggleFavorite={() => toggleFavorite(item.id, token)}
+              onToggleFavorite={
+                isAuthenticated ? () => toggleFavorite(item.id, token) : undefined
+              }
             />
           )}
           contentContainerStyle={styles.listContent}

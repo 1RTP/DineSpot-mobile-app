@@ -4,11 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import PALETTE from '../constants/colors';
 import { Restaurant } from '../store/restaurantStore';
+import { useAuthStore } from '../store/authStore';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
   isFavorite: boolean;
-  onToggleFavorite: () => void;
+  onToggleFavorite?: () => void;
 }
 
 export default function RestaurantCard({
@@ -17,12 +18,13 @@ export default function RestaurantCard({
   onToggleFavorite,
 }: RestaurantCardProps) {
   const router = useRouter();
+  const { isAuthenticated } = useAuthStore();
 
   const handlePress = () => {
     router.push(`/restaurant/${restaurant.id}`);
   };
 
-  return (
+return (
     <TouchableOpacity style={styles.card} onPress={handlePress} activeOpacity={0.9}>
       <View style={styles.imageContainer}>
         <Image
@@ -30,19 +32,23 @@ export default function RestaurantCard({
           style={styles.image}
           resizeMode="cover"
         />
-        <TouchableOpacity
-          style={styles.favoriteButton}
-          onPress={(e) => {
-            e.stopPropagation();
-            onToggleFavorite();
-          }}
-        >
-          <Ionicons
-            name={isFavorite ? 'bookmark' : 'bookmark-outline'}
-            size={22}
-            color={isFavorite ? PALETTE.primary : PALETTE.textPrimary}
-          />
-        </TouchableOpacity>
+        
+        {isAuthenticated && onToggleFavorite && (
+          <TouchableOpacity
+            style={styles.favoriteButton}
+            onPress={(e) => {
+              e.stopPropagation();
+              onToggleFavorite();
+            }}
+          >
+            <Ionicons
+              name={isFavorite ? 'bookmark' : 'bookmark-outline'}
+              size={22}
+              color={isFavorite ? PALETTE.primary : PALETTE.textPrimary}
+            />
+          </TouchableOpacity>
+        )}
+
         <View style={styles.ratingBadge}>
           <Ionicons name="star" size={14} color={PALETTE.accent} />
           <Text style={styles.ratingText}>{restaurant.rating.toFixed(1)}</Text>

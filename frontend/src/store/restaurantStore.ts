@@ -75,34 +75,31 @@ export const useRestaurantStore = create<RestaurantState>((set, get) => ({
   toggleFavorite: async (restaurantId: string, token?: string | null) => {
     const { favorites } = get();
     const isFavorite = favorites.includes(restaurantId);
-    
-    let newFavorites: string[];
-    if (isFavorite) {
-      newFavorites = favorites.filter((id) => id !== restaurantId);
-    } else {
-      newFavorites = [...favorites, restaurantId];
-    }
-    
-    set({ favorites: newFavorites });
-    await AsyncStorage.setItem('favorites', JSON.stringify(newFavorites));
-    
-    // Sync with backend if authenticated
+
     if (token) {
       try {
         if (isFavorite) {
           await axios.delete(`${API_URL}/api/favorites/${restaurantId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
+          set({ favorites: favorites.filter((id) => id !== restaurantId) });
         } else {
           await axios.post(
             `${API_URL}/api/favorites`,
             { restaurantId },
             { headers: { Authorization: `Bearer ${token}` } }
           );
+          set({ favorites: [...favorites, restaurantId] });
         }
       } catch (error) {
         console.error('Sync favorites error:', error);
       }
+    } else {
+      const newFavorites = isFavorite
+        ? favorites.filter((id) => id !== restaurantId)
+        : [...favorites, restaurantId];
+      set({ favorites: newFavorites });
+      await AsyncStorage.setItem('favorites', JSON.stringify(newFavorites));
     }
   },
 

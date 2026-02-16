@@ -2,11 +2,13 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import PALETTE from '../../src/constants/colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-type TabIconName = 'home' | 'home-outline' | 'search' | 'search-outline' | 'bookmark' | 'bookmark-outline' | 'person' | 'person-outline';
+// type TabIconName = 'home' | 'home-outline' | 'search' | 'search-outline' | 'bookmark' | 'bookmark-outline' | 'person' | 'person-outline';
 
 export default function TabLayout() {
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['bottom']}>
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -79,5 +81,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    </SafeAreaView>
   );
 }

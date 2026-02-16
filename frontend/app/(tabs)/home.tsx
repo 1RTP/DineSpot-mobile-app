@@ -18,7 +18,7 @@ const COUNTRIES = ['All', 'UK', 'USA', 'France', 'Italy', 'Japan', 'India', 'Tha
 export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { token } = useAuthStore();
+  const { isAuthenticated, token } = useAuthStore();
   const { favorites, filters, setFilters, toggleFavorite, fetchRestaurants, getFilteredRestaurants } = useRestaurantStore();
   const [searchText, setSearchText] = useState('');
   const [showCuisineModal, setShowCuisineModal] = useState(false);
@@ -194,7 +194,9 @@ export default function HomeScreen() {
           <RestaurantCard
             restaurant={item}
             isFavorite={favorites.includes(item.id)}
-            onToggleFavorite={() => toggleFavorite(item.id, token)}
+            onToggleFavorite={
+              isAuthenticated ? () => toggleFavorite(item.id, token) : undefined
+            }
           />
         )}
         contentContainerStyle={styles.listContent}
