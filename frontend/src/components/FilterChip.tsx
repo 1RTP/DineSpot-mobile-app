@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     color: PALETTE.textPrimary,
     marginRight: 4,
     fontWeight: '500',
+    // fontFamily: 'WorkSans-Medium'
   },
   labelActive: {
     color: PALETTE.primary,

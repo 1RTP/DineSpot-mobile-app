@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 15,
     color: PALETTE.textPrimary,
+    // fontFamily: 'WorkSans-Medium',
   },
   listContent: {
     paddingHorizontal: 16,
@@ -109,5 +110,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: PALETTE.textMuted,
     marginTop: 16,
+    // fontFamily: 'WorkSans-Medium',
   },
 });

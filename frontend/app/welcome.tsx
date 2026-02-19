@@ -63,13 +63,15 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: PALETTE.textPrimary,
     marginTop: 40,
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
+    // fontFamily: 'WorkSans-Medium',
   },
   appName: {
     fontSize: 36,
     fontWeight: '700',
     color: PALETTE.textPrimary,
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
+    // fontFamily: 'WorkSans-Medium',
   },
   buttonContainer: {
     width: '100%',

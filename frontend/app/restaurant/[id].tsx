@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   notFoundText: {
     fontSize: 16,
     color: PALETTE.textSecondary,
+    // fontFamily: 'WorkSans-Medium',
   },
   imageContainer: {
     position: 'relative',
@@ -164,6 +165,7 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 4,
     flex: 1,
+    // fontFamily: 'WorkSans-Bold',
   },
   ratingBadge: {
     flexDirection: 'row',
@@ -188,16 +190,19 @@ const styles = StyleSheet.create({
     color: PALETTE.textPrimary,
     marginTop: 16,
     marginBottom: 8,
+    // fontFamily: 'WorkSans-Bold',
   },
   description: {
     fontSize: 14,
     color: PALETTE.textSecondary,
     lineHeight: 22,
+    // fontFamily: 'WorkSans-Medium',
   },
   address: {
     fontSize: 14,
     color: PALETTE.textPrimary,
     lineHeight: 22,
+    // fontFamily: 'WorkSans-Medium',
   },
   menuItem: {
     flexDirection: 'row',
@@ -221,9 +226,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: PALETTE.textPrimary,
     marginBottom: 4,
+    // fontFamily: 'WorkSans-Medium',
   },
   menuItemPrice: {
     fontSize: 14,
     color: PALETTE.textSecondary,
+    // fontFamily: 'WorkSans-Medium',
   },
 });

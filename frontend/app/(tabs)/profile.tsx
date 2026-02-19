@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: PALETTE.textPrimary,
+    // fontFamily: 'WorkSans-Medium',
   },
   profileSection: {
     alignItems: 'center',
@@ -224,14 +225,17 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: PALETTE.textPrimary,
     marginBottom: 4,
+    // fontFamily: 'WorkSans-Medium',
   },
   userEmail: {
     fontSize: 14,
     color: PALETTE.textSecondary,
+    // fontFamily: 'WorkSans-Medium',
   },
   menuContainer: {
     paddingHorizontal: 24,
     marginTop: 20,
+    fontFamily: 'WorkSans-Medium',
   },
   menuItem: {
     flexDirection: 'row',
@@ -247,6 +251,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: PALETTE.textPrimary,
     marginLeft: 16,
+    // fontFamily: 'WorkSans-Medium',
   },
   notLoggedIn: {
     flex: 1,
@@ -259,6 +264,7 @@ const styles = StyleSheet.create({
     color: PALETTE.textSecondary,
     marginTop: 16,
     marginBottom: 24,
+    // fontFamily: 'WorkSans-Medium',
   },
   loginButton: {
     backgroundColor: PALETTE.primary,
@@ -270,5 +276,6 @@ const styles = StyleSheet.create({
     color: PALETTE.textLight,
     fontSize: 16,
     fontWeight: '600',
+    // fontFamily: 'WorkSans-Medium',
   },
 });

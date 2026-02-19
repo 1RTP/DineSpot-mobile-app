@@ -1,8 +1,8 @@
 # DineSpot - Restaurant Discovery App
 
-Мобільний застосунок для пошуку та збереження улюблених ресторанів.
+Мобільний застосунок для пошуку ресторанів.
 
-## 🏗️ Архітектура
+## Архітектура
 
 ```
 app/
@@ -18,7 +18,7 @@ app/
 └── README.md
 ```
 
-## 🔧 Налаштування
+## Налаштування
 
 ### Backend (.env)
 ```env
@@ -33,13 +33,16 @@ EXPO_PUBLIC_BACKEND_URL=https://your-domain.com
 
 **Важливо:** Не змінюйте `EXPO_PACKAGER_HOSTNAME` та `EXPO_PACKAGER_PROXY_URL` - вони потрібні для роботи preview.
 
-## 📦 Встановлення
+## Встановлення
 
 ### Backend
 ```bash
 cd backend
 pip install -r requirements.txt
+python -m pip install -r requirements.txt
+
 uvicorn server:app --host 0.0.0.0 --port 8001 --reload
+python -m uvicorn server:app --reload --port 8001
 ```
 
 ### Frontend
@@ -49,7 +52,7 @@ yarn install
 yarn start
 ```
 
-## 🗄️ База даних (MongoDB)
+## База даних (MongoDB)
 
 ### Колекції:
 
@@ -81,7 +84,7 @@ yarn start
 }
 ```
 
-3. **favorites** - Улюблені
+3. **favorites** - Улюблені ресторани
 ```json
 {
   "id": "uuid",
@@ -91,7 +94,7 @@ yarn start
 }
 ```
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Автентифікація
 - `POST /api/auth/register` - Реєстрація
@@ -109,7 +112,7 @@ yarn start
 - `POST /api/favorites` - Додати до улюблених
 - `DELETE /api/favorites/{restaurant_id}` - Видалити з улюблених
 
-## 📱 Екрани
+## Екрани
 
 1. **Splash** - Завантаження з логотипом
 2. **Welcome** - Вітання, кнопки Log in / Sign up
@@ -124,14 +127,14 @@ yarn start
 11. **Sandbox** - Порожня тестова сторінка
 12. **Favorites** - Улюблені ресторани
 
-## 🔐 Автентифікація
+## Автентифікація
 
 Застосунок використовує JWT-подібну автентифікацію:
 1. При реєстрації/вході генерується унікальний токен
 2. Токен зберігається в AsyncStorage
 3. Токен передається в заголовку `Authorization: Bearer {token}`
 
-## 📝 Примітки
+## Примітки
 
 - Аватари зберігаються в форматі base64 в MongoDB
 - Фільтри: кухня, рейтинг, країна

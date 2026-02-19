@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Header from '../src/components/Header';
 import TabBar from '../src/components/TabBar';
@@ -30,7 +29,6 @@ function PreferenceItem({ icon, title, subtitle, onPress }: PreferenceItemProps)
 
 export default function PreferencesScreen() {
   const router = useRouter();
-  // const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.container}>
@@ -56,7 +54,7 @@ export default function PreferencesScreen() {
           onPress={() => {}}
         />
       </View>
-
+      
       <TabBar />
     </View>
   );
@@ -92,9 +90,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: PALETTE.textPrimary,
     marginBottom: 2,
+    // fontFamily: 'WorkSans-Medium',
   },
   preferenceSubtitle: {
     fontSize: 13,
     color: PALETTE.textSecondary,
+    // fontFamily: 'WorkSans-Medium',
   },
 });

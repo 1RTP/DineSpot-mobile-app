@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: PALETTE.textPrimary,
+    // fontFamily: 'WorkSans-Medium',
   },
   notLoggedIn: {
     flex: 1,
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 24,
     textAlign: 'center',
+    // fontFamily: 'WorkSans-Medium',
   },
   loginButton: {
     backgroundColor: PALETTE.primary,
@@ -112,6 +114,7 @@ const styles = StyleSheet.create({
     color: PALETTE.textLight,
     fontSize: 16,
     fontWeight: '600',
+    // fontFamily: 'WorkSans-Medium',
   },
   listContent: {
     paddingHorizontal: 16,
@@ -121,5 +124,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: PALETTE.textMuted,
     marginTop: 8,
+    // fontFamily: 'WorkSans-Medium',
   },
 });

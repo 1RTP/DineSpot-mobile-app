@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 15,
     color: PALETTE.textPrimary,
+    // fontFamily: 'WorkSans-Medium',
   },
   settingsButton: {
     width: 44,
@@ -324,6 +325,7 @@ const styles = StyleSheet.create({
     color: PALETTE.textPrimary,
     marginBottom: 16,
     textAlign: 'center',
+    // fontFamily: 'WorkSans-Medium',
   },
   modalOption: {
     paddingVertical: 14,
@@ -337,6 +339,7 @@ const styles = StyleSheet.create({
   modalOptionText: {
     fontSize: 16,
     color: PALETTE.textPrimary,
+    // fontFamily: 'WorkSans-Medium',
   },
   modalOptionTextSelected: {
     fontWeight: '600',

@@ -117,14 +117,16 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '700',
     color: PALETTE.textPrimary,
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
+    // fontFamily: 'WorkSans-Medium',
   },
   subtitle: {
     fontSize: 32,
     fontWeight: '700',
     color: PALETTE.textPrimary,
     marginBottom: 40,
-    fontStyle: 'italic',
+    // fontStyle: 'italic',
+    // fontFamily: 'WorkSans-Medium',
   },
   form: {
     width: '100%',
@@ -140,10 +142,12 @@ const styles = StyleSheet.create({
   loginText: {
     color: PALETTE.textSecondary,
     fontSize: 14,
+    // fontFamily: 'WorkSans-Medium',
   },
   loginLink: {
     color: PALETTE.textPrimary,
     fontSize: 14,
     fontWeight: '600',
+    // fontFamily: 'WorkSans-Medium',
   },
 });
