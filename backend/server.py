@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 import hashlib
 import secrets
 
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
@@ -262,7 +263,7 @@ async def add_favorite(favorite_data: FavoriteCreate, current_user: dict = Depen
         "restaurantId": favorite_data.restaurantId,
         "createdAt": datetime.utcnow()
     }
-    result = await db.favorites.insert_one(favorite) 
+    result = await db.favorites.insert_one(favorite)
     doc = await db.favorites.find_one({"_id": result.inserted_id})
     return jsonable_encoder(doc, custom_encoder={ObjectId: str})
 
