@@ -246,7 +246,8 @@ async def get_restaurant(restaurant_id: str):
 @api_router.get("/favorites", response_model=list[Favorite])
 async def get_favorites(current_user: dict = Depends(get_current_user)):
     favorites = await db.favorites.find({"userId": current_user["id"]}).to_list(100)
-    return jsonable_encoder(favorites, custom_encoder={ObjectId: str})
+    encoded = [jsonable_encoder(fav, custom_encoder={ObjectId: str}) for fav in favorites]
+    return encoded
 
 @api_router.post("/favorites", response_model=Favorite)
 async def add_favorite(favorite_data: FavoriteCreate, current_user: dict = Depends(get_current_user)):
